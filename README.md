@@ -13,8 +13,8 @@ The syntax is as follows:
 `python wards.py inputfile outputfile delay`
 
 where `inputfile` is a text file containing a list of street addresses,
-one address per line, `outputfile` is the output file, and `delay` is
-the number of milliseconds to pause between requests. 
+one address per line, and `outputfile` is the output file, which will
+contain the street addresses and the ward information, separated by commas. 
 
 ##Installation and requirements##
 
