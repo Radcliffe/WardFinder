@@ -10,7 +10,7 @@ and looks up the ward for each address.
 
 The syntax is as follows:
 
-`python wards.py inputfile outputfile delay`
+`python wards.py inputfile outputfile`
 
 where `inputfile` is a text file containing a list of street addresses,
 one address per line, and `outputfile` is the output file, which will
