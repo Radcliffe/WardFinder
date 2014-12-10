@@ -9,10 +9,10 @@ class MainPage(webapp2.RequestHandler):
     def get(self):
         address = self.request.get('Address')
         ward = wards.lookup_address(address)
-        sender_address = "Ward Wiz <info@ward-wiz.appspot.com>"
+        sender_address = "dradcliffe@gmail.com"
         user_address = "dradcliffe@gmail.com"
         subject = "Your ward information"
-        body = self.request.get("body")
+        body = "Here is your ward information for %s\n%s" % (address, ward)
         mail.send_mail(sender_address, user_address, subject, body)
         self.response.write("Thanks!")
 
