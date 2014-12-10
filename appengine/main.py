@@ -1,6 +1,5 @@
 import webapp2
 import urllib
-from google.appengine.api import urlfetch
 from google.appengine.api import mail
 from google.appengine.api import taskqueue
 import wards

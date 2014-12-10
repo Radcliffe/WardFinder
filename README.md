@@ -16,6 +16,8 @@ where `inputfile` is a text file containing a list of street addresses,
 one address per line, and `outputfile` is the output file, which will
 contain the street addresses and the ward information, separated by commas. 
 
+There is also a web version at http://ward-wiz.appspot.com.
+
 ##Installation and requirements##
 
 This script requires Python 2.7 and the lxml library.
