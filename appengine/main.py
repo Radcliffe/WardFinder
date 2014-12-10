@@ -7,7 +7,14 @@ import wards
 
 WEB_FORM = """\
 <html>
+  <head>
+    <title>Ward Wiz</title>
+  </head>
   <body>
+    <h1>Ward Wiz</h1>
+    <p>This service looks up the wards for Minneapolis street addresses,
+       and returns the results by email. </p>
+    <p>Results may take several minutes to arrive, so please be patient.</p>
     <form action="/enqueue" method="post">
       <div>Email:<input type="text" name="user"></div>
       <br>
@@ -29,7 +36,7 @@ class Enqueue(webapp2.RequestHandler):
         streets = self.request.get('streets')
         user = self.request.get('user')
         taskqueue.add(params={'user': user, 'streets': streets})
-    
+        self.redirect('/')
 
 class TaskRunner(webapp2.RequestHandler):
     def post(self):
