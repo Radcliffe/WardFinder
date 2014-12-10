@@ -1,0 +1,17 @@
+application: ward-wiz 
+version: 1
+runtime: python27
+api_version: 1
+threadsafe: true
+
+handlers:
+- url: /hello
+  script: helloworld.application
+- url: /.*
+  script: main.application
+  
+libraries:
+- name: webapp2
+  version: latest
+- name: lxml
+  version: latest
