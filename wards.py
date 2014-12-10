@@ -22,12 +22,12 @@ def lookup_address(street_address):
 
 # Look up a list of addresses and write the results to a file.
 
-def lookup(input_file_name, output_file_name, delay_ms):
+def lookup(input_file_name, output_file_name):
     with open(input_file_name, "rt") as f:
         addresses = [address.strip() for address in f.readlines()]
     wards = [lookup_address(address) for address in addresses]
     with open(output_file_name, "wt") as f:
-        f.writelines("%s, %s\n  " % (x, y) for x, y in zip(addresses, wards))
+        f.writelines("%s, %s\n" % (x, y) for x, y in zip(addresses, wards))
         
 
 if __name__ == "__main__":
@@ -35,6 +35,6 @@ if __name__ == "__main__":
     if num_args == 3:
         input_file_name = sys.argv[1]
         output_file_name = sys.argv[2]
-        lookup(input_file_name, output_file_name, delay_ms)
+        lookup(input_file_name, output_file_name)
     else:
-        print "Usage: python wards.py inputfile.txt outputfile.txt delay"
+        print "Usage: python wards.py inputfile.txt outputfile.txt"
