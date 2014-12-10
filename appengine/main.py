@@ -40,17 +40,19 @@ class Enqueue(webapp2.RequestHandler):
 class TaskRunner(webapp2.RequestHandler):
     def post(self):
         user_address = self.request.get('user')
-        streets = self.request.get('streets').split('\n')
-        output = []
-        for street in streets:
-            street = street.strip()
-            if street:
-                ward = wards.lookup_address(street)
-                output.append("%s, %s" % (street, ward))
-        sender_address = "dradcliffe@gmail.com"
-        subject = "Your ward information"
-        body = "\n".join(output)
-        mail.send_mail(sender_address, user_address, subject, body)
+        streets = self.request.get('streets')
+        if user_address and streets:
+            streets = streets.split('/n')
+            output = []
+            for street in streets:
+                street = street.strip()
+                if street:
+                    ward = wards.lookup_address(street)
+                    output.append("%s, %s" % (street, ward))
+            sender_address = "dradcliffe@gmail.com"
+            subject = "Your ward information"
+            body = "\n".join(output)
+            mail.send_mail(sender_address, user_address, subject, body)
 
 
 application = webapp2.WSGIApplication([
