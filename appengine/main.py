@@ -42,7 +42,7 @@ class TaskRunner(webapp2.RequestHandler):
         user_address = self.request.get('user')
         streets = self.request.get('streets')
         if user_address and streets:
-            streets = streets.split('/n')
+            streets = streets.split('\n')
             output = []
             for street in streets:
                 street = street.strip()
