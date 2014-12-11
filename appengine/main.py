@@ -65,4 +65,4 @@ application = webapp2.WSGIApplication([
     ('/', MainPage),
     ('/enqueue', Enqueue),
     ('/_ah/queue/default', TaskRunner)
-], debug=True)
+], debug=False)
