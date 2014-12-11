@@ -14,11 +14,17 @@ WEB_FORM = """\
     <p>This service looks up the wards for Minneapolis street addresses,
        and returns the results by email. </p>
     <p>Results may take several minutes to arrive, so please be patient.</p>
+    <p><strong>Tips:</strong> Include the house number, street name, direction,
+    and apartment number, if any.
+    Do not include the city, state, or zip code.</p> 
+    <p>This service uses the 
+    <a href="http://apps.ci.minneapolis.mn.us/AddressPortalApp/?AppID=WardFinderApp">City 
+    of Minneapolis ward finder application.</a></p>
     <form action="/enqueue" method="post">
-      <div>Email:<input type="text" name="user"></div>
+      <div>Email: <input type="text" name="user"></div>
       <br>
       Enter Minneapolis street addresses (one per line) <br>
-      <div><textarea name="streets" rows="20" cols="60"></textarea></div>
+      <div><textarea name="streets" rows="20" cols="60" placeholder="2799 1st Ave SE"></textarea></div>
       <div><input type="submit" value="submit"></div>
     </form>
   </body>

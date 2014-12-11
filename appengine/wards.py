@@ -16,4 +16,7 @@ def lookup_address(street_address):
         doc = lxml.html.fromstring(html)
     except:
         return 'NA'
-    return doc.find('head/title').text or 'NA'
+    title = doc.find('head/title')
+    if title:
+        return title.text
+    return 'NA'
