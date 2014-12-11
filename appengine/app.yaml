@@ -7,9 +7,13 @@ threadsafe: true
 handlers:
 - url: /.*
   script: main.application
+- url: /favicon\.ico
+  static_files: static/favicon.ico
+  upload: static/favicon\.ico
   
 libraries:
 - name: webapp2
   version: latest
 - name: lxml
   version: latest
+

@@ -15,8 +15,8 @@ WEB_FORM = """\
        and returns the results by email. </p>
     <p>Results may take several minutes to arrive, so please be patient.</p>
     <p><strong>Tips:</strong> Include the house number, street name, direction,
-    and apartment number, if any.
-    Do not include the city, state, or zip code.</p> 
+    and apartment number, if any.<p>
+    <p>Do not include the city, state, or zip code.</p> 
     <p>This service uses the 
     <a href="http://apps.ci.minneapolis.mn.us/AddressPortalApp/?AppID=WardFinderApp">City 
     of Minneapolis ward finder application.</a></p>
