@@ -29,4 +29,4 @@ def lookup_address(street_address):
         if match:
             result = ', '.join(match.groups())
     memcache.set(street_address, result)
-    return 'NA, NA'
+    return result
