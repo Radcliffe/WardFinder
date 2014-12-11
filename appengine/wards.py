@@ -12,12 +12,14 @@ pattern = re.compile(r"/ward([0-9]+)/")
 
 def get_ward(street_address):
     street_address = normalize(street_address)
-    values = {'Address': street_address}
-    data = urllib.urlencode(values)
     ward = memcache.get(street_address)
     if ward is not None:
         return ward
+    
+    values = {'Address': street_address}
+    data = urllib.urlencode(values)
     ward = 'NA'
+    
     try:
         req = urllib2.Request(URL, data)
         response = urllib2.urlopen(req)
