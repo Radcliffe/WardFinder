@@ -52,12 +52,13 @@ class TaskRunner(webapp2.RequestHandler):
             for street in streets:
                 street = street.strip()
                 if street:
-                    ward = wards.lookup_address(street)
-                    output.append("%s, %s" % (street, ward))
+                    ward = wards.get_ward(street)
+                    output.append("%s,%s" % (street, ward))
             sender_address = "dradcliffe@gmail.com"
             subject = "Your ward information"
             body = "\n".join(output)
             mail.send_mail(sender_address, user_address, subject, body)
+            # print body
 
 
 application = webapp2.WSGIApplication([

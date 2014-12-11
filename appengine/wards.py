@@ -6,27 +6,37 @@ from google.appengine.api import memcache
 
 URL = "http://apps.ci.minneapolis.mn.us/AddressPortalApp/Search/SearchPOST?AppID=WardFinderApp"
 
+pattern = re.compile(r"/ward([0-9]+)/")
+
 # Look up the ward for a Minneapolis street address.
 
-def lookup_address(street_address):
+def get_ward(street_address):
+    street_address = normalize(street_address)
     values = {'Address': street_address}
     data = urllib.urlencode(values)
-    result = memcache.get(street_address)
-    if result is not None:
-        return result
-    result = 'NA, NA'
+    ward = memcache.get(street_address)
+    if ward is not None:
+        return ward
+    ward = 'NA'
     try:
         req = urllib2.Request(URL, data)
         response = urllib2.urlopen(req)
-        html = response.read()
-        doc = lxml.html.fromstring(html)
-    except:
-        return result
-    title = doc.find('head/title')
-    if title is not None:
-        text = title.text.strip()
-        match = re.match("Ward (\d+) - (.*) - City of Minneapolis", text)
+        url = response.geturl()
+        match = re.search(pattern, url)
         if match:
-            result = ', '.join(match.groups())
-    memcache.set(street_address, result)
-    return result
+            ward = match.group(1)
+    except:
+        return 'NA'
+
+    memcache.set(street_address, ward)
+    return ward
+    
+def normalize(street):
+    street = street.strip().upper()
+    for stopword in (' MINNEAPOLIS', ' MPLS', ' APT ', ' APT.', ' ROOM ', 
+                     ' UNIT ', '#', ' NO '): 
+        if stopword in street:
+            index = street.index(stopword)
+            street = street[:index].strip()
+    return street
+        
