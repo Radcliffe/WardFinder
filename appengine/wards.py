@@ -19,17 +19,17 @@ def get_ward(street_address):
     values = {'Address': street_address}
     data = urllib.urlencode(values)
     ward = 'NA'
+    req = urllib2.Request(URL, data)
     
-    try:
-        req = urllib2.Request(URL, data)
+    try:    
         response = urllib2.urlopen(req)
-        url = response.geturl()
-        match = re.search(pattern, url)
-        if match:
-            ward = match.group(1)
+        url = response.geturl()     
     except:
         return 'NA'
-
+        
+    match = re.search(pattern, url)
+    if match:
+        ward = match.group(1)
     memcache.set(street_address, ward)
     return ward
     
