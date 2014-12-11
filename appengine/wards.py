@@ -1,6 +1,5 @@
 import urllib
 import urllib2
-import lxml.html
 import re
 from google.appengine.api import memcache
 
