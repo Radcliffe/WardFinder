@@ -17,7 +17,7 @@ def get_ward(street):
     try:
         extra = doc.get_element_by_id('extra')
         return extra[0][1][2][0].text.split()[1]
-    except KeyError:
+    except:
         return 'NA'
  
         
