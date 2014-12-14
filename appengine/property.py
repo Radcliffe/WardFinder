@@ -10,11 +10,11 @@ def get_ward(street):
     values = {'Address': street}
     data = urllib.urlencode(values)
     property_info = {}
-    req = urllib2.Request(URL, data)      
-    response = urllib2.urlopen(req)
-    html = response.read()
-    doc = lxml.html.fromstring(html)
-    try:
+    req = urllib2.Request(URL, data)
+    try:      
+        response = urllib2.urlopen(req)
+        html = response.read()
+        doc = lxml.html.fromstring(html)
         extra = doc.get_element_by_id('extra')
         return extra[0][1][2][0].text.split()[1]
     except:
