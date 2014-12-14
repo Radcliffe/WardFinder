@@ -1,10 +1,6 @@
-GEOCODE = False # Must be set to False when deploying to Google App Engine
-                # Must be set to True when testing locally
 import json
 
-FILENAME = "City_Council_Wards.json"
-
-def load_polygons(filename=FILENAME):
+def load_polygons(filename="City_Council_Wards.json"):
     polygons = {}
     with open(filename) as f:
         jsdata = '\n'.join(f.readlines())
@@ -35,25 +31,8 @@ def get_ward_by_lng_lat(lng, lat, polygons):
             return ward
     return 'NA'
 
-if GEOCODE:
-    import geocoder
-    def get_ward(street, polygons):
-        g = geocoder.google(street + ", MINNEAPOLIS MN")
-        if g:
-            lat, lng = g.latlng
-            ward = get_ward_by_lng_lat(lng, lat, polygons)
-            return str(lng) + "," + str(lat) + "," + ward
-        return "NA,NA,NA"
             
 def sgn(x):
     if x < 0:
         return -1
     return 1
-        
-if __name__ == "__main__":
-    polygons = load_polygons()
-    with open("training.csv", "rt") as f:
-        for line in f.readlines():
-            addr, actual = line.strip().split(',')
-            predicted = get_ward(addr, polygons)
-            print (addr, actual, predicted)     
