@@ -1,8 +1,12 @@
+PROPERTY_SEARCH = True
+MEMCACHE = True
+
 import urllib
 import urllib2
 import re
 from google.appengine.api import memcache
-import property
+if PROPERTY_SEARCH:
+    import property
 
 URL = "http://apps.ci.minneapolis.mn.us/AddressPortalApp/Search/SearchPOST?AppID=WardFinderApp"
 
@@ -12,9 +16,10 @@ pattern = re.compile(r"/ward([0-9]+)/")
 
 def get_ward(street_address):
     street_address = normalize(street_address)
-    ward = memcache.get(street_address)
-    if ward is not None:
-        return ward
+    if MEMCACHE:
+        ward = memcache.get(street_address)
+        if ward is not None:
+            return ward
     
     values = {'Address': street_address}
     data = urllib.urlencode(values)
@@ -25,15 +30,17 @@ def get_ward(street_address):
         response = urllib2.urlopen(req)
         url = response.geturl()     
     except:
-        return property.get_ward(street_address)
+        if PROPERTY_SEARCH:
+            return property.get_ward(street_address)
         
     match = re.search(pattern, url)
     if match:
         ward = match.group(1)
-    else:
+    elif PROPERTY_SEARCH:
         ward = property.get_ward(street_address)
            
-    memcache.set(street_address, ward)
+    if MEMCACHE:
+        memcache.set(street_address, ward)
     return ward
     
 def normalize(street):

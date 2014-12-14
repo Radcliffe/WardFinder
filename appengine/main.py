@@ -1,8 +1,14 @@
+GEOCODE = False
+
 import webapp2
 import urllib
 from google.appengine.api import mail
 from google.appengine.api import taskqueue
-import wards
+
+if GEOCODE:
+    import wardsjs
+else:
+    import wards
 
 WEB_FORM = """\
 <html>
@@ -30,6 +36,9 @@ WEB_FORM = """\
 </html>
 """
 
+if GEOCODE:
+    polygons = wardsjs.load_polygons()
+
 class MainPage(webapp2.RequestHandler):
     def get(self):
         self.response.write(WEB_FORM)
@@ -52,13 +61,16 @@ class TaskRunner(webapp2.RequestHandler):
             for street in streets:
                 street = street.strip()
                 if street:
-                    ward = wards.get_ward(street)
+                    if GEOCODE:
+                        ward = wardsjs.get_ward(street, polygons)
+                    else:
+                        ward = wards.get_ward(street)
                     output.append("%s,%s" % (street, ward))
             sender_address = "dradcliffe@gmail.com"
             subject = "Your ward information"
             body = "\n".join(output)
             mail.send_mail(sender_address, user_address, subject, body)
-            # print body
+            print body
 
 
 application = webapp2.WSGIApplication([
