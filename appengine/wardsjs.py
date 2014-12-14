@@ -1,13 +1,12 @@
-# Doesn't work with Google App Engine!
-
+GEOCODE = False # Must be set to False when deploying to Google App Engine
+                # Must be set to True when testing locally
 import json
-import geocoder
 
 FILENAME = "City_Council_Wards.json"
 
 def load_polygons(filename=FILENAME):
     polygons = {}
-    with open(filename, "rt") as f:
+    with open(filename) as f:
         jsdata = '\n'.join(f.readlines())
         wards = json.loads(jsdata)
         for feature in wards['features']:
@@ -30,15 +29,21 @@ def point_in_polygon(x, y, poly):
     return abs(crossings) == 1
 
 
-def get_ward(street, polygons):
-    g = geocoder.google(street + ", MINNEAPOLIS MN")
-    if g:
-        y, x = g.latlng
-        for ward, poly in polygons.iteritems():
-            if point_in_polygon(x, y, poly):
-                return str(x) + "," + str(y) + "," + ward
-        return str(x) + "," + str(y) + ",NA"
-    return "NA,NA,NA"
+def get_ward_by_lng_lat(lng, lat, polygons):
+    for ward, poly in polygons.iteritems():
+        if point_in_polygon(lng, lat, poly):
+            return ward
+    return 'NA'
+
+if GEOCODE:
+    import geocoder
+    def get_ward(street, polygons):
+        g = geocoder.google(street + ", MINNEAPOLIS MN")
+        if g:
+            lat, lng = g.latlng
+            ward = get_ward_by_lng_lat(lng, lat, polygons)
+            return str(lng) + "," + str(lat) + "," + ward
+        return "NA,NA,NA"
             
 def sgn(x):
     if x < 0:

@@ -1,14 +1,9 @@
-GEOCODE = False
-
 import webapp2
 import urllib
 from google.appengine.api import mail
 from google.appengine.api import taskqueue
-
-if GEOCODE:
-    import wardsjs
-else:
-    import wards
+import wardsjs
+import wards
 
 WEB_FORM = """\
 <html>
@@ -25,6 +20,8 @@ WEB_FORM = """\
     <p>This service uses the 
     <a href="http://apps.ci.minneapolis.mn.us/AddressPortalApp/?AppID=WardFinderApp">City 
     of Minneapolis ward finder application</a>.</p>
+    <p>You may also enter a list of longitude/latitude
+    pairs, separated by commas. Example: -93.261571,44.93174
     <form action="/enqueue" method="post">
       <div>Email: <input type="email" name="user"></div>
       <br>
@@ -36,8 +33,7 @@ WEB_FORM = """\
 </html>
 """
 
-if GEOCODE:
-    polygons = wardsjs.load_polygons()
+polygons = wardsjs.load_polygons()
 
 class MainPage(webapp2.RequestHandler):
     def get(self):
@@ -61,8 +57,14 @@ class TaskRunner(webapp2.RequestHandler):
             for street in streets:
                 street = street.strip()
                 if street:
-                    if GEOCODE:
-                        ward = wardsjs.get_ward(street, polygons)
+                    ward = 'NA'
+                    lnglat = street.split(',')
+                    if len(lnglat) == 2:
+                        try:
+                            lng, lat = map(float, lnglat)
+                            ward = wardsjs.get_ward_by_lng_lat(lng, lat, polygons)
+                        except ValueError:
+                            ward = wards.get_ward(street)
                     else:
                         ward = wards.get_ward(street)
                     output.append("%s,%s" % (street, ward))
