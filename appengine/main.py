@@ -20,7 +20,7 @@ WEB_FORM = """\
     <a href="http://apps.ci.minneapolis.mn.us/AddressPortalApp/?AppID=WardFinderApp">City 
     of Minneapolis ward finder application</a>.</p>
     <form action="/enqueue" method="post">
-      <div>Email: <input type="text" name="user"></div>
+      <div>Email: <input type="email" name="user"></div>
       <br>
       Enter Minneapolis street addresses (one per line) <br>
       <div><textarea name="streets" rows="20" cols="60" placeholder="2799 1st Ave SE"></textarea></div>

@@ -2,6 +2,7 @@ import urllib
 import urllib2
 import re
 from google.appengine.api import memcache
+import property
 
 URL = "http://apps.ci.minneapolis.mn.us/AddressPortalApp/Search/SearchPOST?AppID=WardFinderApp"
 
@@ -24,11 +25,14 @@ def get_ward(street_address):
         response = urllib2.urlopen(req)
         url = response.geturl()     
     except:
-        return 'NA'
+        return property.get_ward(street_address)
         
     match = re.search(pattern, url)
     if match:
         ward = match.group(1)
+    else:
+        ward = property.get_ward(street_address)
+           
     memcache.set(street_address, ward)
     return ward
     
@@ -40,4 +44,6 @@ def normalize(street):
             index = street.index(stopword)
             street = street[:index].strip()
     return street
-        
+
+if __name__ == "__main__":
+    print get_ward("2617 Fremont Ave S")
