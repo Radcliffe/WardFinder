@@ -72,7 +72,6 @@ class TaskRunner(webapp2.RequestHandler):
             subject = "Your ward information"
             body = "\n".join(output)
             mail.send_mail(sender_address, user_address, subject, body)
-            print body
 
 
 application = webapp2.WSGIApplication([
